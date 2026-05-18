@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Keranjang - Kopi Satu Tudju</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8B5E34;
+            --bg-color: #F8FAFC;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --white: #FFFFFF;
+            --border: #E2E8F0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-dark); padding-bottom: 100px; }
+
+        .nav-header {
+            background: var(--white);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+        .nav-header a { color: var(--text-dark); text-decoration: none; }
+
+        .section { background: var(--white); padding: 20px; margin-top: 10px; }
+        .section-title { font-size: 16px; font-weight: 700; margin-bottom: 15px; color: var(--text-dark); }
+        
+        .cart-item { display: flex; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+        .cart-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .cart-img {
+            width: 65px;
+            height: 65px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-right: 15px;
+            flex-shrink: 0;
+            background-color: #f1f5f9;
+        }
+
+        .item-details { flex: 1; padding-right: 10px; }
+        .item-name { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+        .item-note { font-size: 12px; color: var(--primary); margin-bottom: 8px; cursor: pointer; }
+        .item-price { font-weight: 700; color: var(--text-dark); }
+        
+        .qty-control { display: flex; align-items: center; gap: 12px; background: var(--bg-color); padding: 5px 10px; border-radius: 8px; flex-shrink: 0; }
+        .qty-btn { background: none; border: none; color: var(--primary); font-size: 16px; cursor: pointer; font-weight: bold; }
+        .qty-num { font-weight: 700; font-size: 14px; }
+
+        .info-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border); font-size: 15px; }
+        .info-label { color: var(--text-muted); }
+        .info-val { font-weight: 600; }
+
+        .bill-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: var(--text-muted); }
+        .bill-total { display: flex; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); font-size: 18px; font-weight: 800; color: var(--text-dark); }
+
+        .payment-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            padding: 15px 20px 25px;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+            z-index: 50;
+        }
+        .pay-btn {
+            background: var(--primary);
+            color: var(--white);
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        /* Animasi Loading Spinner */
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #E2E8F0;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Styling List Pembayaran */
+        .payment-option {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            border: 1px solid var(--border);
+            cursor: pointer;
+        }
+        .payment-option:active { background: #F1F5F9; }
+        
+        .wallet-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 900;
+            font-size: 11px;
+            flex-shrink: 0;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-header">
+        <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+        <span>Detail Pesanan</span>
+    </div>
+
+    <div class="section" style="margin-top: 0;">
+        <div class="info-row" style="border: none; padding: 0;">
+            <div class="info-label">Makan di Tempat</div>
+            <div class="info-val" style="color: var(--primary);"><i class="fa-solid fa-location-dot"></i> Meja 6</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Pesanan Anda</div>
+        
+        <div class="cart-item">
+            <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=200&auto=format&fit=crop" alt="Kopi Susu" class="cart-img">
+            <div class="item-details">
+                <div class="item-name">Kopi Susu Satu Tudju</div>
+                <div class="item-note"><i class="fa-regular fa-pen-to-square"></i> Kurang manis, ais sikit</div>
+                <div class="item-price">Rp 22.000</div>
+            </div>
+            <div class="qty-control">
+                <button class="qty-btn">-</button>
+                <div class="qty-num">1</div>
+                <button class="qty-btn">+</button>
+            </div>
+        </div>
+
+        <div class="cart-item">
+            <img src="https://images.unsplash.com/photo-1576107232684-1279f390859f?q=80&w=200&auto=format&fit=crop" alt="Kentang Goreng" class="cart-img">
+            <div class="item-details">
+                <div class="item-name">Kentang Goreng</div>
+                <div class="item-note"><i class="fa-regular fa-pen-to-square"></i> Tambah nota</div>
+                <div class="item-price">Rp 18.000</div>
+            </div>
+            <div class="qty-control">
+                <button class="qty-btn">-</button>
+                <div class="qty-num">1</div>
+                <button class="qty-btn">+</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Ringkasan Pembayaran</div>
+        <div class="bill-row">
+            <span>Subtotal</span>
+            <span>Rp 40.000</span>
+        </div>
+        <div class="bill-row">
+            <span>Pajak Resto (PB1) 10%</span>
+            <span>Rp 4.000</span>
+        </div>
+        <div class="bill-total">
+            <span>Total Tagihan</span>
+            <span>Rp 44.000</span>
+        </div>
+    </div>
+
+    <div class="payment-bar" id="paymentBar">
+        <button class="pay-btn" onclick="processCheckout()">
+            <span>Pilih Pembayaran</span>
+            <span>Rp 44.000 <i class="fa-solid fa-chevron-right" style="font-size: 14px; margin-left: 5px;"></i></span>
+        </button>
+    </div>
+
+    <!-- Overlay Animasi Loading -->
+    <div id="loadingOverlay" style="display: none; position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(255,255,255,0.95); z-index: 100; justify-content: center; align-items: center; flex-direction: column;">
+        <div class="spinner"></div>
+        <p style="margin-top: 20px; font-weight: 700; color: var(--primary); font-size: 16px;">Memproses Pesanan...</p>
+    </div>
+
+    <!-- Halaman/Modal List Pembayaran -->
+    <div id="paymentModal" style="display: none; position: fixed; top:0; left:0; right:0; bottom:0; background: var(--bg-color); z-index: 200; overflow-y: auto;">
+        <div class="nav-header">
+            <a href="#" onclick="closePaymentModal()"><i class="fa-solid fa-arrow-left"></i></a>
+            <span>Metode Pembayaran</span>
+        </div>
+        
+        <div style="padding: 20px;">
+            <div class="section-title" style="margin-bottom: 10px; color: var(--text-muted); font-size: 14px;">E-Wallet & QRIS</div>
+            
+            <div class="payment-option" onclick="alert('Lanjut ke QRIS')">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <!-- Logo QRIS -->
+                    <div class="wallet-icon" style="background: transparent; border: 1px solid #E2E8F0;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" style="width: 80%; object-fit: contain;">
+                    </div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 15px;">QRIS</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">Gopay, OVO, Dana, LinkAja, BCA, dll</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
+            </div>
+
+            <div class="payment-option" onclick="alert('Lanjut ke GoPay')">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="wallet-icon" style="background: #00AED6;">GOPAY</div>
+                    <span style="font-weight: 700; font-size: 15px;">GoPay</span>
+                </div>
+                <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
+            </div>
+
+            <div class="payment-option" onclick="alert('Lanjut ke OVO')">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="wallet-icon" style="background: #4C3494;">OVO</div>
+                    <span style="font-weight: 700; font-size: 15px;">OVO</span>
+                </div>
+                <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
+            </div>
+
+            <div class="payment-option" onclick="alert('Lanjut ke DANA')">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="wallet-icon" style="background: #118EEA;">DANA</div>
+                    <span style="font-weight: 700; font-size: 15px;">DANA</span>
+                </div>
+                <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function processCheckout() {
+            // Tampilkan animasi loading
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            
+            // Tunggu 1.5 detik untuk efek screen record, lalu munculkan modal pembayaran
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').style.display = 'none';
+                document.getElementById('paymentModal').style.display = 'block';
+                // Sembunyikan tombol bayar di bawah agar tidak tumpang tindih
+                document.getElementById('paymentBar').style.display = 'none';
+            }, 1500);
+        }
+
+        function closePaymentModal() {
+            // Tutup modal pembayaran dan kembalikan tombol bayar
+            document.getElementById('paymentModal').style.display = 'none';
+            document.getElementById('paymentBar').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
