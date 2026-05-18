@@ -150,12 +150,12 @@
 
     <div class="section">
         <div class="section-title">Pesanan Anda</div>
-        
+
         <div class="cart-item">
             <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=200&auto=format&fit=crop" alt="Kopi Susu" class="cart-img">
             <div class="item-details">
                 <div class="item-name">Kopi Susu Satu Tudju</div>
-                <div class="item-note"><i class="fa-regular fa-pen-to-square"></i> Tambah nota</div>
+                <div class="item-note"><i class="fa-regular fa-pen-to-square"></i> Tambah  nota</div>
                 <div class="item-price">Rp 22.000</div>
             </div>
             <div class="qty-control">
@@ -178,21 +178,37 @@
                 <button class="qty-btn">+</button>
             </div>
         </div>
+        
+
+        <div class="cart-item">
+            <img src="https://images.unsplash.com/photo-1557006021-b85faa2bc5e2?q=80&w=200&auto=format&fit=crop" alt="Kentang Goreng" class="cart-img">
+            <div class="item-details">
+                <div class="item-name">Caramel Macchiato</div>
+                <div class="item-note"><i class="fa-regular fa-pen-to-square"></i> Tambah nota</div>
+                <div class="item-price">Rp 28.000</div>
+            </div>
+            <div class="qty-control">
+                <button class="qty-btn">-</button>
+                <div class="qty-num">1</div>
+                <button class="qty-btn">+</button>
+            </div>
+        </div>
+
     </div>
 
     <div class="section">
         <div class="section-title">Ringkasan Pembayaran</div>
         <div class="bill-row">
             <span>Subtotal</span>
-            <span>Rp 40.000</span>
+            <span>Rp 68.000</span>
         </div>
         <div class="bill-row">
             <span>Pajak Resto (PB1) 10%</span>
-            <span>Rp 4.000</span>
+            <span>Rp 6.800</span>
         </div>
         <div class="bill-total">
             <span>Total Tagihan</span>
-            <span>Rp 44.000</span>
+            <span>Rp 74.800</span>
         </div>
     </div>
 
@@ -209,7 +225,7 @@
         <p style="margin-top: 20px; font-weight: 700; color: var(--primary); font-size: 16px;">Memproses Pesanan...</p>
     </div>
 
-    <!-- Halaman/Modal List Pembayaran -->
+ <!-- Halaman/Modal List Pembayaran -->
     <div id="paymentModal" style="display: none; position: fixed; top:0; left:0; right:0; bottom:0; background: var(--bg-color); z-index: 200; overflow-y: auto;">
         <div class="nav-header">
             <a href="#" onclick="closePaymentModal()"><i class="fa-solid fa-arrow-left"></i></a>
@@ -256,6 +272,44 @@
                 </div>
                 <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
             </div>
+
+            <!-- New Virtual Account Section -->
+            <div class="section-title" style="margin-bottom: 10px; margin-top: 25px; color: var(--text-muted); font-size: 14px;">Transfer Bank (Virtual Account)</div>
+
+            <div class="payment-option" onclick="alert('Lanjut ke Virtual Account BCA')">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="wallet-icon" style="background: #0066AE; font-size: 12px;">BCA</div>
+                    <span style="font-weight: 700; font-size: 15px;">BCA Virtual Account</span>
+                </div>
+                <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
+            </div>
+
+            <div class="payment-option" onclick="alert('Lanjut ke Virtual Account Mandiri')">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="wallet-icon" style="background: #003D79; font-size: 8px; line-height: 1;">MANDIRI</div>
+                    <span style="font-weight: 700; font-size: 15px;">Mandiri Virtual Account</span>
+                </div>
+                <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
+            </div>
+
+            <div class="payment-option" onclick="alert('Lanjut ke Virtual Account BNI')">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="wallet-icon" style="background: #F15A23; font-size: 12px;">BNI</div>
+                    <span style="font-weight: 700; font-size: 15px;">BNI Virtual Account</span>
+                </div>
+                <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
+            </div>
+
+            <div class="payment-option" onclick="alert('Lanjut ke Virtual Account BRI')">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="wallet-icon" style="background: #00529C; font-size: 12px;">BRI</div>
+                    <span style="font-weight: 700; font-size: 15px;">BRIVA</span>
+                </div>
+                <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
+            </div>
+
+            <!-- Extra padding at the bottom for scrolling gracefully -->
+            <div style="height: 40px;"></div>
         </div>
     </div>
 
